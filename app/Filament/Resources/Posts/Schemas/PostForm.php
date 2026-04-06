@@ -31,13 +31,24 @@ class PostForm
                     ->schema([
                     Group::make([
                         TextInput::make("title")
-                            ->minLength(5), 
+                            ->rules(['required', 'min:5'])
+                            ->validationMessages([
+                                'required' => 'Perlu judul bro',
+                            ]), 
                         TextInput::make("slug")
-                            ->unique(),
+                            ->unique()
+                            ->rules('required', 'min:3')
+                            ->validationMessages([
+                                'unique' => 'The slug must be unique.'
+                            ]),
                         Select::make("category_id")
                             ->relationship("category", "name")
                             ->preload()
-                            ->searchable(),
+                            ->searchable()
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Jangan sampe kosong bro',
+                            ]),
                         ColorPicker::make("color"),
                     ])->columns(2),
 
@@ -56,7 +67,8 @@ class PostForm
                             ->disk("public")
                             ->directory("posts")
                             ->visibility("public")
-                            ->image(),
+                            ->image()
+                            ->required(),
                     ]),
 
                     // section 3 - meta
