@@ -18,10 +18,14 @@ class ProductsTable
     {
         return $table
             ->columns([
-                TextColumn::make("name"),
-                TextColumn::make("sku"),
-                TextColumn::make("price"),
-                TextColumn::make("stock"),
+                TextColumn::make("name")
+                    ->sortable(),
+                TextColumn::make("sku")
+                    ->sortable(),
+                TextColumn::make("price")
+                    ->sortable(),
+                TextColumn::make("stock")
+                    ->sortable(),
                 ImageColumn::make("image")
                     ->disk("public"),
                 TextColumn::make('is_active')
