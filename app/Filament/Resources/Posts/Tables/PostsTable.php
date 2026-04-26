@@ -12,6 +12,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Symfony\Component\Console\Color;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class PostsTable
@@ -21,11 +24,14 @@ class PostsTable
         return $table
             ->columns([
                 TextColumn::make("title")
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make("slug")
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make("category.name")
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 ColorColumn::make("color"),
                 IconColumn::make("published")
                     ->boolean(),
@@ -34,11 +40,28 @@ class PostsTable
                 TextColumn::make("created_at")
                     ->label("Created At")
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
             ])
             ->defaultSort("created_at", "desc")
             ->filters([
-                //
+                Filter::make("created_at")
+                    ->label("Creation Date")
+                    ->schema([
+                        DatePicker::make("created_at")
+                            ->label("Select Date : "),
+                    ])
+                    ->query(function ($query, $data) {
+                        return $query
+                            ->when(
+                                $data["created_at"],
+                                fn ($query, $date) => $query->whereDate("created_at", $date)
+                            );
+                    }),
+                SelectFilter::make("category_id")
+                    ->label("Category")
+                    ->relationship("category", "name")
+                    ->preload(),
             ])
             ->recordActions([
                 EditAction::make(),
