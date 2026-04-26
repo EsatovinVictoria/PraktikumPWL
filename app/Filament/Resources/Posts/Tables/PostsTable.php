@@ -23,27 +23,43 @@ class PostsTable
     {
         return $table
             ->columns([
+                TextColumn::make("id")
+                    ->label("ID")
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make("title")
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make("slug")
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make("category.name")
                     ->sortable()
-                    ->searchable(),
-                ColorColumn::make("color"),
-                IconColumn::make("published")
-                    ->boolean(),
+                    ->searchable()
+                    ->toggleable(),
+                ColorColumn::make("color")
+                    ->label("Color")
+                    ->toggleable(),
                 ImageColumn::make("image")
-                    ->disk("public"),
+                    ->disk("public")
+                    ->toggleable(),
                 TextColumn::make("created_at")
                     ->label("Created At")
                     ->dateTime()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make("tags")
+                    ->label("Tags")
+                    ->toggleable(isToggledHiddenByDefault: true),
+                IconColumn::make("published")
+                    ->boolean()
+                    ->label("Published")
+                    ->toggleable(),
             ])
-            ->defaultSort("created_at", "desc")
+            ->defaultSort("created_at", "asc")
             ->filters([
                 Filter::make("created_at")
                     ->label("Creation Date")
