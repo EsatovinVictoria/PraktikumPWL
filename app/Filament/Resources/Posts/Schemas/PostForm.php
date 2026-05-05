@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Schema;
 use Filament\Support\Markdown;
+use App\Models\Category;
 
 
 class PostForm
@@ -43,7 +44,8 @@ class PostForm
                             ]),
                         Select::make("category_id")
                             ->relationship("category", "name")
-                            ->preload()
+                            ->options(Category::all()->pluck("name", "id"))
+                            // ->preload()
                             ->searchable()
                             ->required()
                             ->validationMessages([
