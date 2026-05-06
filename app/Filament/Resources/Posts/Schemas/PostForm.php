@@ -16,7 +16,8 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Schema;
 use Filament\Support\Markdown;
 use App\Models\Category;
-
+use DateTime;
+use Filament\Forms\Components\DateTimePicker;
 
 class PostForm
 {
@@ -77,13 +78,15 @@ class PostForm
                     Section::make("Meta Information")
                     ->icon("heroicon-o-tag")
                     ->schema([
-                        TagsInput::make("tags"),
+                        // TagsInput::make("tags"),
+                        Select::make("tags")
+                            ->relationship("tags", "name")
+                            ->multiple()
+                            ->preload(),
                         Checkbox::make("published"),
+                        DateTimePicker::make("published_at"),
                     ])
                 ])->columnSpan(1),
-
-                DatePicker::make("published_at")
-                ->columnSpanFull(),
             ])->columns(3);
     }
 }
